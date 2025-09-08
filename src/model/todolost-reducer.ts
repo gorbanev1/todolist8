@@ -1,15 +1,17 @@
 import {Todolist} from "../App.tsx";
 
 type Actions={
-    type: string
-    payload: any
+    type: 'delete_todolist'
+    payload: {
+        id: string
+    }
 }
 
 const initialState: Todolist[]=[]
-export const todolistReducer = (state: Todolist[] = initialState, action: Actions): Todolist[]=>{
-    switch (action.type){
-        case 'delete_todolist':{
-            return state
+export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
+    switch (action.type) {
+        case 'delete_todolist': {
+            return state.filter(todolist => todolist.id !== action.payload.id)
         }
         default:
             return state
