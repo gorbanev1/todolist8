@@ -15,6 +15,10 @@ import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {containerSx} from './TodolistItem.styles'
 import {NavButton} from './NavButton'
+import {changeTodolistTitleAC, todolistsReducer} from "./model/todolost-reducer.ts";
+
+
+
 
 export type Todolist = {
   id: string
@@ -107,7 +111,10 @@ export const App = () => {
   const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
     setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task)})
   }
-
+  const startState=todolists
+  const endState = todolistsReducer(startState, changeTodolistTitleAC({id: todolistId1, title: 'new title'}))
+  console.log(endState[0].title)
+  console.log(endState[1].title)
   return (
       <ThemeProvider theme={theme}>
         <div className={'app'}>
