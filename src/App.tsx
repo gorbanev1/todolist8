@@ -46,7 +46,8 @@ type ThemeMode = 'dark' | 'light'
 export const App = () => {
   const todolistId1 = v1()
   const todolistId2 = v1()
-  const [todolists, dispatchTodolists]= useReducer(todolistsReducer, [
+
+  const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
     {id: todolistId1, title: 'What to learn', filter: 'all'},
     {id: todolistId2, title: 'What to buy', filter: 'all'},
   ])
@@ -96,8 +97,8 @@ export const App = () => {
     setTasks({...tasks, [todolistId]: []})
   }  */
   const createTodolist = (title: string) => {
-
-    const action = createTodolistAC( title)
+    const newTodolistId=v1()
+    const action = createTodolistAC({id: newTodolistId, title})
     dispatchTodolists(action)
     setTasks({...tasks, [action.payload.id]:[]})
     // setTasks({...tasks, [todolistId]: []})

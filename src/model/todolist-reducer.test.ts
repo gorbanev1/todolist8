@@ -15,32 +15,35 @@ beforeEach(()=>{
     todolistId1=v1()
     todolistId2=v1()
 
-    startState=[
-        {id: todolistId1, title: 'what to learn', filter: 'all'},
-        {id: todolistId2, title: 'what to buy', filter: 'all'}
-    ]
+    startState={
+        [todolistId1]: [
+            {id: v1(), title: 'HTML&CSS', isDone: true},
+            {id: v1(), title: 'JS', isDone: true},
+            {id: v1(), title: 'ReactJS', isDone: false},
+        ],
+        [todolistId2]: [
+            {id: v1(), title: 'Rest API', isDone: true},
+            {id: v1(), title: 'GraphQL', isDone: false},
+        ],
+    }
 })
 
-test ("correct todolist should be deleted", ()=>{
-
-
-
-    const endState=todolistsReducer(startState, deleteTodolistAC(todolistId1))
-    expect(endState.length).toBe(1)
-    expect(endState[0].id).toBe(todolistId2)
+test ("correct tasks for todolist should be deleted", ()=>{
+    const endState=tasksReducer(startState, deleteTodolisTaskstAC(todolistId1))
+    expect(endState.todoliId1).toBe(undefined)
+    //expect(endState[0].id).toBe(todolistId2)
 })
 
 test ("correct todolist should be created", ()=>{
-
     const title = 'New todolist'
-    const endState=todolistsReducer(startState, createTodolistAC(title))
+    const id = v1()
+    const endState=todolistsReducer(startState, createTodolistAC({title, id }))
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe(title)
 })
 
 test("changing todolist's title should be correct",    () => {
         const newTitle = "new title"
-
         const endState = todolistsReducer(startState, changeTodolistTitleAC({id: todolistId1, title: newTitle}))
         expect(endState[0].title).toBe(newTitle)
         expect(endState[1].title).toBe("what to buy")
