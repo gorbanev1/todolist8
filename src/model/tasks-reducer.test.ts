@@ -1,16 +1,16 @@
 import {v1} from 'uuid'
 import {beforeEach, expect, test} from 'vitest'
-import type {TasksState, Todolist} from '../App.tsx'
-import {
+import type {TasksState} from '../App.tsx'
 
-    createTodolistAC,
+import {createTodolistsTasksAC, deleteTodolistsTasksAC, tasksReducer} from "./tasks-reducer.ts";
 
-} from "./todolost-reducer.ts";
-import {tasksReducer} from "./tasks-reducer.ts";
+let startState: TasksState = {}
+let todolistId1 : string
+let todolistId2: string
 
-let startState: TasksState= {}
-
-beforeEach(()=>{
+beforeEach(() => {
+    todolistId1 = v1()
+    todolistId2 = v1()
     startState = {
         todolistId1: [
             {id: '1', title: 'CSS', isDone: false},
@@ -25,16 +25,33 @@ beforeEach(()=>{
     }
 })
 
-test ("array should be created for new todolist", ()=>{
+test("array should be created for new todolist", () => {
     const id = v1()
-    const endState=tasksReducer(startState, createTodolistAC({title:"New todolist", id}))
+    const endState = tasksReducer(startState, createTodolistsTasksAC(id))
     const keys = Object.keys(endState)
-    const newKey = keys.find(k=> k!=='todolistId1'&&k!=='todolistId2')
-    if (!newKey){
+    const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2')
+    if (!newKey) {
         throw Error('New key should be added')
     }
     expect(keys.length).toBe(3)
     expect(endState[newKey]).toEqual([])
 
 })
+test("tasks for todolist  should be deleted correctly", () => {
+    const endState = tasksReducer(startState, deleteTodolistsTasksAC('todolistId1'))
+    const keys=Object.keys(endState)
+    expect(keys.length).toBe(1)
+    expect(endState['todolistId1']).not.toBeDefined()
+    expect(endState['todolistId1']).toBeUndefined()
+   expect(endState.todolistId2[0].title).toBe("bread")
+       //expect(endState.todolistId1[0].title).toBe(undefined)
+})
 
+test('property with todolistId should be deleted', () => {
+    const endState = tasksReducer(startState, deleteTodolistsTasksAC('todolistId2'))
+    const keys = Object.keys(endState)
+    expect(keys.length).toBe(1)
+    expect(endState['todolistId2']).not.toBeDefined()
+    // or
+    expect(endState['todolistId2']).toBeUndefined()
+})

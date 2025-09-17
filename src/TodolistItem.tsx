@@ -35,7 +35,7 @@ export const TodolistItem = (props: Props) => {
     changeTaskTitle,
     changeTodolistTitle,
   } = props
-
+console.log(tasks,"item")
   const changeFilterHandler = (filter: FilterValues) => {
     changeFilter(id, filter)
   }
