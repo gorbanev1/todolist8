@@ -57,7 +57,9 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('task should be deleted correctly', ()=>{
-  const endState=tasksReducer(startState, deleteTaskAC({todolistId:"todolistId1",taskId: "2"}))
+    const tid="2"
+
+  const endState=tasksReducer(startState, deleteTaskAC({todolistId:"todolistId1",taskId: tid}))
    // expect(endState['todolistId1'][1]).toBeUndefined()
     expect(endState['todolistId1'][1].title).toBe('React')
 })

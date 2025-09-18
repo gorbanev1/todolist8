@@ -21,7 +21,7 @@ import {
     createTodolistAC, deleteTodolistAC,
     todolistsReducer
 } from "./model/todolost-reducer.ts";
-import {createTasksAC, createTodolistsTasksAC, deleteTodolistsTasksAC, tasksReducer} from "./model/tasks-reducer.ts";
+import {createTasksAC, createTodolistsTasksAC, deleteTaskAC, deleteTodolistsTasksAC, tasksReducer} from "./model/tasks-reducer.ts";
 
 
 export type Todolist = {
@@ -143,7 +143,7 @@ export const App = () => {
     }
 
     const deleteTask = (todolistId: string, taskId: string) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
+      dispatchTasks(deleteTaskAC({todolistId, taskId}))
     }
 
     const createTask = (todolistId: string, title: string) => {
