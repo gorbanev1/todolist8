@@ -3,7 +3,7 @@ import {beforeEach, expect, test} from 'vitest'
 import type {TasksState} from '../App.tsx'
 
 import {
-    changeTaskStatusAC,
+    changeTaskStatusAC, changeTaskTitleAC,
     createTodolistsTasksAC,
     deleteTaskAC,
     deleteTodolistsTasksAC,
@@ -77,4 +77,10 @@ test ('task status should be changed correctly',()=>{
     expect(endState['todolistId1'].find(t=>t.id==='1')?.isDone).toBe(!isDone)
     expect(endState['todolistId1'].find(t=> t.id===taskId)?.isDone).toBe(true)
 
+})
+test('task title should be changed correctly', ()=>{
+    const title="new title"
+    const taskId="2"
+    const endState=tasksReducer(startState, changeTaskTitleAC({todolistId: 'todolistId1', taskId, title }))
+    expect(endState['todolistId1'].find(t=>t.id===taskId)?.title).toBe(title)
 })

@@ -21,7 +21,14 @@ import {
     createTodolistAC, deleteTodolistAC,
     todolistsReducer
 } from "./model/todolost-reducer.ts";
-import {createTasksAC, createTodolistsTasksAC, deleteTaskAC, deleteTodolistsTasksAC, tasksReducer} from "./model/tasks-reducer.ts";
+import {
+    changeTaskStatusAC, changeTaskTitleAC,
+    createTasksAC,
+    createTodolistsTasksAC,
+    deleteTaskAC,
+    deleteTodolistsTasksAC,
+    tasksReducer
+} from "./model/tasks-reducer.ts";
 
 
 export type Todolist = {
@@ -132,7 +139,8 @@ export const App = () => {
 
 
         delete tasks[todolistId]
-        setTasks({...tasks})
+        dispatchTasks(deleteTodolistsTasksAC(todolistId))
+        /*setTasks({...tasks})*/
     }
 
     /*  const changeTodolistTitle = (todolistId: string, title: string) => {
@@ -152,11 +160,13 @@ export const App = () => {
     }
 
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id == taskId ? {...task, isDone} : task)})
+        dispatchTasks(changeTaskStatusAC({todolistId, taskId}))
+        //setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id == taskId ? {...task, isDone} : task)})
     }
 
     const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task)})
+        dispatchTasks(changeTaskTitleAC({todolistId, taskId, title}))
+        // setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task)})
     }
     /*    const startStateTasks = tasks
       let keys=Object.keys(startStateTasks)
@@ -167,6 +177,7 @@ export const App = () => {
          keys=Object.keys(endState)
         console.log(keys.length,"полей")
         console.log(endStateTodolists, endState)*/
+
     return (
         <ThemeProvider theme={theme}>
             <div className={'app'}>
