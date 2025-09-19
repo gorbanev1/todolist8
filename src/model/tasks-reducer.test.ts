@@ -2,7 +2,13 @@ import {v1} from 'uuid'
 import {beforeEach, expect, test} from 'vitest'
 import type {TasksState} from '../App.tsx'
 
-import {createTodolistsTasksAC, deleteTaskAC, deleteTodolistsTasksAC, tasksReducer} from "./tasks-reducer.ts";
+import {
+    changeTaskStatusAC,
+    createTodolistsTasksAC,
+    deleteTaskAC,
+    deleteTodolistsTasksAC,
+    tasksReducer
+} from "./tasks-reducer.ts";
 
 let startState: TasksState = {}
 let todolistId1 : string
@@ -62,4 +68,13 @@ test('task should be deleted correctly', ()=>{
   const endState=tasksReducer(startState, deleteTaskAC({todolistId:"todolistId1",taskId: tid}))
    // expect(endState['todolistId1'][1]).toBeUndefined()
     expect(endState['todolistId1'][1].title).toBe('React')
+})
+
+test ('task status should be changed correctly',()=>{
+    const taskId="1"
+    const isDone=startState['todolistId1'].find(t=>t.id===taskId)?.isDone
+    const endState=tasksReducer(startState, changeTaskStatusAC({todolistId: 'todolistId1', taskId: "1"}))
+    expect(endState['todolistId1'].find(t=>t.id==='1')?.isDone).toBe(!isDone)
+    expect(endState['todolistId1'].find(t=> t.id===taskId)?.isDone).toBe(true)
+
 })
